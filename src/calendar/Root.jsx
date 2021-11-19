@@ -20,7 +20,7 @@ import { Calendar, FakeCalendar } from './Calendar';
 
 import generateDays from './generate-days';
 
-function Root({ validator, pickDay }) {
+function Root({ validator, pickDay, monthChanged }) {
   const [month, setMonth] = useState(new Date());
   const [fakeMonth, setFakeMonth] = useState(month);
   const [animation, setAnimation] = useState('');
@@ -39,6 +39,7 @@ function Root({ validator, pickDay }) {
     const next = dateFns.addMonths(month, 1);
     setMonth(next);
     setAnimation('next');
+    monthChanged && monthChanged(next);
   };
 
   const handlePrevMonth = () => {
@@ -49,6 +50,7 @@ function Root({ validator, pickDay }) {
     const prev = dateFns.subMonths(month, 1);
     setMonth(prev);
     setAnimation('prev');
+    monthChanged && monthChanged(prev);
   };
 
   const handleAnimationEnd = () => {
@@ -168,7 +170,8 @@ function Root({ validator, pickDay }) {
 
 Root.propTypes = {
   validator: PropTypes.func,
-  pickDay: PropTypes.func.isRequired
+  pickDay: PropTypes.func.isRequired,
+  monthChanged: PropTypes.func
 };
 
 export default Root;

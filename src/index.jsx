@@ -23,6 +23,8 @@ function DayTimePicker({
   confirmText,
   loadingText,
   doneText,
+  dayChanged, 
+  monthChanged,
   theme
 }) {
   const [pickedDay, setPickedDay] = useState(null);
@@ -31,6 +33,9 @@ function DayTimePicker({
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handlePickDay = day => {
+    if(pickedDay !== day) {
+      dayChanged && dayChanged(day)
+    }
     setPickedDay(day);
     setShowPickTime(true);
   };
@@ -57,7 +62,7 @@ function DayTimePicker({
   return (
     <ThemeProvider theme={theme}>
       <PopupWrapper>
-        <Calendar validator={preventPastDays} pickDay={handlePickDay} />
+        <Calendar validator={preventPastDays} monthChanged={monthChanged} pickDay={handlePickDay} />
 
         {showPickTime && (
           <Popup>
